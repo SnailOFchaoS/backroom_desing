@@ -71,6 +71,18 @@ module.exports = {
           issuer: /\.[jt]sx?$/,
           use: ['@svgr/webpack', 'url-loader'],
       },
+      {
+        test: /\.(gltf|bin)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'models/',
+              publicPath: '/backroom_desing/models/',
+            },
+          },
+        ],
+      }
     ],
   },
   plugins: [
