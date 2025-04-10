@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useFrame, useLoader } from 'react-three-fiber';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import modelPath from "../../../models/chair.gltf"
+import modelPath from "../../../../models/chair.gltf"
 
 const Chair = () => {
   const [model, setModel] = useState(null);

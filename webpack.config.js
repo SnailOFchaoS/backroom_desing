@@ -66,23 +66,31 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-        {
-          test: /\.svg$/i,
-          issuer: /\.[jt]sx?$/,
-          use: ['@svgr/webpack', 'url-loader'],
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack', 'url-loader'],
       },
       {
-        test: /\.(gltf|bin)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              outputPath: 'models/',
-              publicPath: '/backroom_desing/models/',
-            },
-          },
-        ],
-      }
+        test: /\.(gltf|bin|png|jpg|jpeg)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'models/[hash][ext][query]'
+        }
+      },
+      // *** УДАЛЕНО ЭТО ПРАВИЛО ***
+      // {
+      //   test: /\.(gltf|bin|png|jpg|jpeg)$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {
+      //         outputPath: 'models/',
+      //         publicPath: '/backroom_desing/models/',
+      //       },
+      //     },
+      //   ],
+      // }
     ],
   },
   plugins: [
