@@ -2,24 +2,17 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/backroom_desing/',
-  },
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist'),
-    },
-    historyApiFallback: true,
-    port: 3000,
+    publicPath: '/',
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js$|jsx$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -29,69 +22,43 @@ module.exports = {
         },
       },
       {
-        test: /\.module\.scss$/,
+        test: /\.(glb|gltf|bin)$/i, // Добавляем флаг 'i' для игнорирования регистра
         use: [
-          'style-loader',
           {
-            loader: 'css-loader',
+            loader: 'file-loader',
             options: {
-              modules: {
-                localIdentName: '[name]__[local]--[hash:base64:5]',
-              },
-              sourceMap: true,
-              importLoaders: 2,
+              name: '[name].[ext]',
+              outputPath: 'assets/models',
+              publicPath: '/assets/models',
             },
           },
-          'postcss-loader',
-          'sass-loader',
         ],
       },
       {
-        test: /\.scss$/,
-        exclude: /\.module\.scss$/,
+        test: /\.(png|jpe?g|gif|svg)$/i,
         use: [
-          'style-loader',
           {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              importLoaders: 2,
-            },
+            loader: 'file-loader',
           },
-          'postcss-loader',
-          'sass-loader',
         ],
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
       },
-      {
-        test: /\.svg$/i,
-        issuer: /\.[jt]sx?$/,
-        use: ['@svgr/webpack', 'url-loader'],
-      },
-      {
-        test: /\.(gltf|bin|png|jpg|jpeg)$/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'models/[hash][ext][query]'
-        }
-      },
-      // *** УДАЛЕНО ЭТО ПРАВИЛО ***
-      // {
-      //   test: /\.(gltf|bin|png|jpg|jpeg)$/,
-      //   use: [
-      //     {
-      //       loader: 'file-loader',
-      //       options: {
-      //         outputPath: 'models/',
-      //         publicPath: '/backroom_desing/models/',
-      //       },
-      //     },
-      //   ],
-      // }
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: 9000,
+    hot: true,
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
